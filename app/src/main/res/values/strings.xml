@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Music</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="now_playing">Now Playing</string>
+    <string name="my_play_list">My Play list</string>
+    <string name="all_songs">All Songs</string>
+</resources>
