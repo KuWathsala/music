@@ -1,11 +1,12 @@
-package com.example.music;
+package com.kuwathsala.music;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class MusicFiles {
 
-    private ArrayList<File> allMusicFilesObject = new ArrayList<>();
+    private LinkedList<File> allMusicFilesObject = new LinkedList<>();
 
     private MusicFiles(){}
 
@@ -18,11 +19,11 @@ public class MusicFiles {
         return instance;
     }
 
-    public void setAllMusicFilesObject(ArrayList<File> allMusicFilesObject){
+    public void setAllMusicFilesObject(LinkedList<File> allMusicFilesObject){
         this.allMusicFilesObject = allMusicFilesObject;
     }
 
-    public ArrayList<File> getAllMusicFilesObject() {
+    public LinkedList<File> getAllMusicFilesObject() {
         return this.allMusicFilesObject;
     }
 }

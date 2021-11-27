@@ -1,8 +1,5 @@
-package com.example.music;
+package com.kuwathsala.music;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -12,10 +9,13 @@ import android.widget.ProgressBar;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.kuwathsala.music.models.Song;
 
 public class AllSongs extends Fragment {
 
@@ -33,9 +33,9 @@ public class AllSongs extends Fragment {
     private ProgressBar allSongsProgressBar;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<File> fileObjects = new ArrayList();
-    private ArrayList<String> songs = new ArrayList();
-    private ArrayList<Song> songsDetails = new ArrayList<>();
+    private LinkedList<File> fileObjects = new LinkedList();
+    private LinkedList<String> songs = new LinkedList();
+    private LinkedList<Song> songsDetails = new LinkedList<>();
     MusicFiles musicFiles = MusicFiles.getInstance();
 
     @Override
@@ -46,7 +46,9 @@ public class AllSongs extends Fragment {
         allSongsListView = view.findViewById(R.id.all_songs_list);
         allSongsProgressBar = view.findViewById(R.id.all_songs_progress_bar);
 
+        allSongsProgressBar.setVisibility(View.VISIBLE);
         loadMusicFiles();
+        allSongsProgressBar.setVisibility(View.GONE);
 
         adapter = new MusicAdapter(songs, getContext());
         layoutManager = new LinearLayoutManager(view.getContext());
@@ -57,31 +59,29 @@ public class AllSongs extends Fragment {
     }
 
     private void loadMusicFiles(){
-        allSongsProgressBar.setVisibility(View.VISIBLE);
         fileObjects = getMusicFiles(Environment.getExternalStorageDirectory());
         if (fileObjects==null) return;
         musicFiles.setAllMusicFilesObject(fileObjects);
         for (int i=0; i<fileObjects.size(); i++) {
             songs.add(fileObjects.get(i).getName());
         }
-        songs.trimToSize();
-        allSongsProgressBar.setVisibility(View.GONE);
+//        songs.trimToSize();
     }
 
-    private ArrayList<File> getMusicFiles(File file){
+    private LinkedList<File> getMusicFiles(File file){
         try {
-            ArrayList<File> allMusicFilesObject = new ArrayList<>();
+            LinkedList<File> allMusicFilesObject = new LinkedList<>();
             File files[] = file.listFiles();
             for (File f : files){
                 if(f.isDirectory() && !f.isHidden()){
                     allMusicFilesObject.addAll(getMusicFiles(f));
                 } else {
-                    if(f.getName().endsWith(".mp3")||f.getName().endsWith(".mp4a")||f.getName().endsWith(".mp3")) {
+                    if(f.getName().endsWith(".mp3")||f.getName().endsWith(".mp4a")) {
                         allMusicFilesObject.add(f);
                     }
                 }
             }
-            allMusicFilesObject.trimToSize();
+//            allMusicFilesObject.trimToSize();
             return allMusicFilesObject;
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,7 +1,6 @@
-package com.example.music;
+package com.kuwathsala.music;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
@@ -10,12 +9,10 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +20,11 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.kuwathsala.music.models.SingleMusic;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class NowPlay extends Fragment {
 
@@ -51,7 +49,7 @@ public class NowPlay extends Fragment {
     int pos;
     static MediaPlayer mMediaPlayer;
     MusicFiles musicFiles;
-    ArrayList<File> files;
+    LinkedList<File> files;
     SingleMusic singleMusic = SingleMusic.getInstance();
 
     @Override

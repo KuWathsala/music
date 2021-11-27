@@ -1,11 +1,7 @@
-package com.example.music;
+package com.kuwathsala.music;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +14,10 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.kuwathsala.music.models.SingleMusic;
+
 public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout containerView;
@@ -53,7 +51,7 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull final MusicAdapter.ViewHolder holder, final int position) {
         holder.name.setText(items.get(position));
-        holder.name.setTextColor(ContextCompat.getColor(context, R.color.colorDark));
+        holder.name.setTextColor(ContextCompat.getColor(context, R.color.colorGray));
         holder.containerView.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
             @Override
@@ -64,10 +62,10 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.ViewHolder> 
                 play.pos = position;
                 play.initMusicPlayer(position);
 
-                holder.name.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+                holder.name.setTextColor(ContextCompat.getColor(context, R.color.colorLight));
 
                 if (alreadySelectedViewHolder != null)
-                    alreadySelectedViewHolder.name.setTextColor(ContextCompat.getColor(context, R.color.colorDark));
+                    alreadySelectedViewHolder.name.setTextColor(ContextCompat.getColor(context, R.color.colorGray));
 
                 alreadySelectedViewHolder = holder;
 

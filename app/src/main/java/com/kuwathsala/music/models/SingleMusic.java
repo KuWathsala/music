@@ -1,4 +1,4 @@
-package com.example.music;
+package com.kuwathsala.music.models;
 
 public class SingleMusic {
     private static SingleMusic instace;

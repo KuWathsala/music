@@ -1,9 +1,11 @@
-package com.example.music;
+package com.kuwathsala.music;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.material.tabs.TabItem;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private PagerController mPagerController;
     private static final int PERMISSION_CODE =1;
     private GLSurfaceView glSurfaceView;
+    private ProgressBar allSongsProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +43,14 @@ public class MainActivity extends AppCompatActivity {
         nowPlay = findViewById(R.id.now_play);
         allSongs = findViewById(R.id.all_songs);
         mPager = findViewById(R.id.view_pager);
+        allSongsProgressBar = findViewById(R.id.progressMainBar);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle("Music");
 
-        mPagerController = new PagerController(getSupportFragmentManager(), mTabLayout.getTabCount());
         if(ContextCompat.checkSelfPermission(MainActivity.this,Manifest.permission.READ_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED){
-            mPager.setAdapter(mPagerController);
+            loadSongsListPageViewer();
         }else{
             requestPermission();
         }
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if(requestCode== PERMISSION_CODE){
             if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mPager.setAdapter(mPagerController);
+                loadSongsListPageViewer();
                 Toast.makeText(MainActivity.this, "permission granted", Toast.LENGTH_SHORT).show();
             }else {
                 Toast.makeText(MainActivity.this, "permission denied", Toast.LENGTH_SHORT).show();
@@ -105,4 +108,10 @@ public class MainActivity extends AppCompatActivity {
         gl.glLoadIdentity();                        // reset the matrix to its default state
         gl.glFrustumf(-ratio, ratio, -1, 1, 3, 7);  // apply the projection matrix
     }
+
+    void loadSongsListPageViewer() {
+        mPagerController = new PagerController(getSupportFragmentManager(), mTabLayout.getTabCount());
+        mPager.setAdapter(mPagerController);
+    }
+
 }

@@ -1,6 +1,4 @@
-package com.example.music;
-
-import android.util.Log;
+package com.kuwathsala.music;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -9,11 +7,15 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 public class PagerController extends FragmentPagerAdapter {
 
+    AllSongs allSongs;
+    NowPlay nowPlay;
     int tabCount;
 
     public PagerController(@NonNull FragmentManager fm, int tabCount) {
         super(fm);
         this.tabCount = tabCount;
+        this.allSongs = AllSongs.getInstance();
+        this.nowPlay = NowPlay.getInstance();
     }
 
     @NonNull
@@ -21,9 +23,9 @@ public class PagerController extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0:
-                return AllSongs.getInstance();
+                return allSongs;
             case 1:
-                return NowPlay.getInstance();
+                return nowPlay;
             //case 2:
                 //return new PlayList();
             default: return null;
