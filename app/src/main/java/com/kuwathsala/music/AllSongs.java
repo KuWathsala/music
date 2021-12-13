@@ -1,11 +1,13 @@
 package com.kuwathsala.music;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,23 +21,29 @@ import com.kuwathsala.music.models.Song;
 
 public class AllSongs extends Fragment {
 
-    private AllSongs(){};
+    private AllSongs(){}
 
     private static AllSongs instance;
 
     public static AllSongs getInstance(){
-        if(instance==null)
-            instance = new AllSongs();
+        if(instance==null){
+            synchronized (AllSongs.class) {
+                if (instance==null){
+                    instance = new AllSongs();
+                }
+            }
+        }
         return instance;
     }
 
     private RecyclerView allSongsListView;
     private ProgressBar allSongsProgressBar;
+    private TextView noMusicFilesText;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private LinkedList<File> fileObjects = new LinkedList();
-    private LinkedList<String> songs = new LinkedList();
-    private LinkedList<Song> songsDetails = new LinkedList<>();
+    private ArrayList<File> fileObjects = new ArrayList();
+    private ArrayList<String> songs = new ArrayList();
+    private ArrayList<Song> songsDetails = new ArrayList<>();
     MusicFiles musicFiles = MusicFiles.getInstance();
 
     @Override
@@ -45,32 +53,41 @@ public class AllSongs extends Fragment {
 
         allSongsListView = view.findViewById(R.id.all_songs_list);
         allSongsProgressBar = view.findViewById(R.id.all_songs_progress_bar);
+        noMusicFilesText = view.findViewById(R.id.noMusicFilesText);
 
         allSongsProgressBar.setVisibility(View.VISIBLE);
         loadMusicFiles();
-        allSongsProgressBar.setVisibility(View.GONE);
 
-        adapter = new MusicAdapter(songs, getContext());
-        layoutManager = new LinearLayoutManager(view.getContext());
-        allSongsListView.setAdapter(adapter);
-        allSongsListView.setLayoutManager(layoutManager);
+        if (songs == null || songs.isEmpty()){
+            noMusicFilesText.setVisibility(View.VISIBLE);
+        } else {
+            noMusicFilesText.setVisibility(View.GONE);
+            adapter = new MusicAdapter(songs, getContext());
+            layoutManager = new LinearLayoutManager(view.getContext());
+            allSongsListView.setAdapter(adapter);
+            allSongsListView.setLayoutManager(layoutManager);
+        }
 
         return view;
     }
 
     private void loadMusicFiles(){
         fileObjects = getMusicFiles(Environment.getExternalStorageDirectory());
-        if (fileObjects==null) return;
+        if (fileObjects==null) {
+            allSongsProgressBar.setVisibility(View.INVISIBLE);
+            return;
+        }
         musicFiles.setAllMusicFilesObject(fileObjects);
         for (int i=0; i<fileObjects.size(); i++) {
             songs.add(fileObjects.get(i).getName());
         }
-//        songs.trimToSize();
+        songs.trimToSize();
+        allSongsProgressBar.setVisibility(View.INVISIBLE);
     }
 
-    private LinkedList<File> getMusicFiles(File file){
+    private ArrayList<File> getMusicFiles(File file){
         try {
-            LinkedList<File> allMusicFilesObject = new LinkedList<>();
+            ArrayList<File> allMusicFilesObject = new ArrayList<>();
             File files[] = file.listFiles();
             for (File f : files){
                 if(f.isDirectory() && !f.isHidden()){
@@ -81,7 +98,7 @@ public class AllSongs extends Fragment {
                     }
                 }
             }
-//            allMusicFilesObject.trimToSize();
+            allMusicFilesObject.trimToSize();
             return allMusicFilesObject;
         } catch (Exception e) {
             e.printStackTrace();

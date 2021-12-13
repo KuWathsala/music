@@ -33,8 +33,13 @@ public class NowPlay extends Fragment {
     private static NowPlay instance;
 
     public static NowPlay getInstance(){
-        if(instance==null)
-            instance = new NowPlay();
+        if(instance==null){
+            synchronized (NowPlay.class) {
+                if (instance==null){
+                    instance = new NowPlay();
+                }
+            }
+        }
         return instance;
     }
 
@@ -49,7 +54,7 @@ public class NowPlay extends Fragment {
     int pos;
     static MediaPlayer mMediaPlayer;
     MusicFiles musicFiles;
-    LinkedList<File> files;
+    ArrayList<File> files;
     SingleMusic singleMusic = SingleMusic.getInstance();
 
     @Override
@@ -83,6 +88,7 @@ public class NowPlay extends Fragment {
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (files == null || files.isEmpty()) return;
                 pos = (pos<files.size()-1) ? pos+1 : 0;
                 singleMusic.setPosition(pos);
                 initMusicPlayer(singleMusic.getPosition());
@@ -92,6 +98,7 @@ public class NowPlay extends Fragment {
         btnPre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (files == null || files.isEmpty()) return;
                 pos = (pos>0) ? pos-1 : files.size()-1;
                 singleMusic.setPosition(pos);
                 initMusicPlayer(singleMusic.getPosition());

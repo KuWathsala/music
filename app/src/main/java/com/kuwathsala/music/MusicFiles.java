@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 public class MusicFiles {
 
-    private LinkedList<File> allMusicFilesObject = new LinkedList<>();
+    private ArrayList<File> allMusicFilesObject = new ArrayList<>();
 
     private MusicFiles(){}
 
@@ -14,16 +14,20 @@ public class MusicFiles {
 
     public static MusicFiles getInstance(){
         if(instance==null){
-            instance = new MusicFiles();
+            synchronized (MusicFiles.class) {
+                if (instance==null){
+                    instance = new MusicFiles();
+                }
+            }
         }
         return instance;
     }
 
-    public void setAllMusicFilesObject(LinkedList<File> allMusicFilesObject){
+    public void setAllMusicFilesObject(ArrayList<File> allMusicFilesObject){
         this.allMusicFilesObject = allMusicFilesObject;
     }
 
-    public LinkedList<File> getAllMusicFilesObject() {
+    public ArrayList<File> getAllMusicFilesObject() {
         return this.allMusicFilesObject;
     }
 }

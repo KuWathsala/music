@@ -9,7 +9,7 @@
         android:id="@+id/album_art"
         android:layout_width="@dimen/album_art_default"
         android:layout_height="@dimen/album_art_default"
-        android:src="@drawable/ic_now_play"
+        android:src="@mipmap/ic_launcher_adaptive_fore"
         app:layout_constraintBottom_toBottomOf="@+id/music_seek_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
